@@ -1,0 +1,43 @@
+import PySimpleGUI as sg
+
+sg.theme("DarkGrey10")
+
+
+currencies = ["USD", "AUD"]
+layout = [
+    [sg.Text("Exchange Rate Calculator")],
+    [sg.Combo(currencies, font=('Helvetica', 14), readonly=False, pad=(5, 5), key="ORIGINAL"),
+     sg.Combo(currencies, font=('Helvetica', 14), readonly=False, pad=(5, 5), key="NEW")],
+    [sg.Input("", size=(8, 5), key="VALUE", enable_events=True), sg.Input("", size=(8, 5), key="VALUE2",
+                                                                          enable_events=True)]
+]
+
+window = sg.Window("Exchange Rate Calculator", layout)
+
+
+def exchange(newCurrency, value):  # Convert AUD TO USD
+    if newCurrency == "AUD":
+        return float(value * 0.66)
+    if newCurrency == "USD":
+        return float(value * 1.51)
+
+
+while True:
+    events, values = window.read()
+    if events in (None, "Quit"):
+        break
+    if values["VALUE"] != "" and values["ORIGINAL"] != "" and values["NEW"] != "":
+        newCurrency = values["ORIGINAL"]
+        value = (int(values["VALUE"]))
+        converted_value = exchange(newCurrency, value)
+        window["VALUE2"].update(round(converted_value, 2))
+
+# print("Which currency are you converting from? (AUD), (USD)")
+#  originalCurrency = input()
+# print("Which currency would you like to convert to? (AUD), (USD)")
+# newCurrency = input()
+#   print(f"Amount:")
+#   value = int(input())
+# converted_value = exchange(newCurrency, value)
+# rounded_value = (round(converted_value, 2))
+# print(f"{originalCurrency} ${value} -> {newCurrency} ${rounded_value}")
